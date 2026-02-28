@@ -12,6 +12,7 @@ Kahn Game v11: Three-Phase Decision Architecture + Decision Memory + Betrayal Me
 import os
 import sys
 import json
+import re
 import argparse
 import logging
 import time
@@ -66,17 +67,15 @@ def parse_json_response(text: str) -> Dict[str, Any]:
     """Robust JSON parsing with fallback - copied from v5"""
     try:
         result = json.loads(text)
-        # DEBUG: Log the keys for debugging Gemini parsing issues
-        logger.info(f"DEBUG: JSON keys found: {list(result.keys())}")
+        logger.debug(f"JSON keys found: {list(result.keys())}")
         return result
     except Exception:
         # Try to extract JSON from markdown blocks first
-        import re
         json_match = re.search(r'```json\s*(.*?)\s*```', text, re.DOTALL)
         if json_match:
             try:
                 result = json.loads(json_match.group(1))
-                logger.info(f"DEBUG: JSON keys found (from markdown): {list(result.keys())}")
+                logger.debug(f"JSON keys found (from markdown): {list(result.keys())}")
                 return result
             except Exception:
                 pass
@@ -87,11 +86,11 @@ def parse_json_response(text: str) -> Dict[str, Any]:
         if start != -1 and end != -1 and end > start:
             try:
                 result = json.loads(text[start:end+1])
-                logger.info(f"DEBUG: JSON keys found (from extraction): {list(result.keys())}")
+                logger.debug(f"JSON keys found (from extraction): {list(result.keys())}")
                 return result
             except Exception:
                 pass
-        logger.warning(f"DEBUG: No JSON found in text: {text[:200]}...")
+        logger.warning(f"No JSON found in text: {text[:200]}...")
         return {}
 
 def load_json_safe(path_rel: str) -> Any:
@@ -428,7 +427,6 @@ def get_ladder_name(value: int) -> str:
 
 def apply_accident_risk(action_value: int, miscalc_risk: str) -> tuple[int, bool]:
     """Apply small risk of accidental escalation at nuclear threshold"""
-    import random
     
     # Only apply accident risk at nuclear signaling level (125) and above
     if action_value < 125:
@@ -1902,11 +1900,6 @@ def run_single_turn(history: List[Dict[str, Any]], turn: int,
         'b_conventional_power': round(b_military_power['conventional'], 4),
         'b_nuclear_power': round(b_military_power['nuclear'], 4),
         
-        # Legacy fields (kept for compatibility)
-        'shown_to_A_opp_immediate_honesty': oppA_imm,
-        'shown_to_A_opp_conditional_credibility': oppA_cond,
-        'shown_to_B_opp_immediate_honesty': oppB_imm,
-        'shown_to_B_opp_conditional_credibility': oppB_cond,
     }
 
 def run_kahn_game_v11(state_a_model: str, state_b_model: str, 
@@ -1928,14 +1921,14 @@ def run_kahn_game_v11(state_a_model: str, state_b_model: str,
     
     # Load state profiles
     state_a_profiles = {
-        'leader': load_json_safe("state_a_leader_kahn.json"),
-        'military': load_json_safe("state_a_military_kahn.json"),
-        'assessment': load_json_safe("state_a_assessment_kahn.json")
+        'leader': load_json_safe("config/state_a_leader_kahn.json"),
+        'military': load_json_safe("config/state_a_military_kahn.json"),
+        'assessment': load_json_safe("config/state_a_assessment_kahn.json")
     }
     state_b_profiles = {
-        'leader': load_json_safe("state_b_leader_kahn.json"),
-        'military': load_json_safe("state_b_military_kahn.json"),
-        'assessment': load_json_safe("state_b_assessment_kahn.json")
+        'leader': load_json_safe("config/state_b_leader_kahn.json"),
+        'military': load_json_safe("config/state_b_military_kahn.json"),
+        'assessment': load_json_safe("config/state_b_assessment_kahn.json")
     }
     
     history = []
@@ -1995,13 +1988,12 @@ def run_kahn_game_v11(state_a_model: str, state_b_model: str,
     
     # Save to specified results directory, or default to 'Kahn results'
     if results_dir is None:
-    results_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'Kahn results')
+        results_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'Kahn results')
     os.makedirs(results_dir, exist_ok=True)
     filepath = os.path.join(results_dir, filename)
     
     # Write CSV
     if history:
-        import pandas as pd
         df = pd.DataFrame(history)
         df.to_csv(filepath, index=False)
         logger.info(f"Game complete. Results saved to: {filepath}")
