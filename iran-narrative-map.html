@@ -1,0 +1,1360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Iran Conflict: A Narrative Ecosystem Map</title>
+    <style>
+        :root {
+            --bg: #0d1117;
+            --surface: #161b22;
+            --surface-raised: #1c2333;
+            --border: #30363d;
+            --text: #e6edf3;
+            --text-muted: #8b949e;
+            --accent-red: #f85149;
+            --accent-blue: #58a6ff;
+            --accent-green: #3fb950;
+            --accent-yellow: #d29922;
+            --accent-purple: #bc8cff;
+            --accent-orange: #f0883e;
+            --accent-cyan: #39d2c0;
+            --narrative-1: #f85149;
+            --narrative-2: #d29922;
+            --narrative-3: #58a6ff;
+            --narrative-4: #3fb950;
+            --narrative-5: #bc8cff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        .hero {
+            position: relative;
+            padding: 80px 24px 60px;
+            text-align: center;
+            background: linear-gradient(180deg, #1a0a0a 0%, var(--bg) 100%);
+            border-bottom: 1px solid var(--border);
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at 50% 0%, rgba(248, 81, 73, 0.12) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            margin-bottom: 12px;
+            position: relative;
+        }
+
+        .hero .subtitle {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        .hero .dateline {
+            display: inline-block;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 6px 18px;
+            font-size: 0.85rem;
+            color: var(--accent-orange);
+            font-weight: 600;
+            position: relative;
+        }
+
+        /* Navigation */
+        .nav-bar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(13, 17, 23, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            padding: 0 24px;
+        }
+
+        .nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            gap: 0;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        .nav-inner::-webkit-scrollbar {
+            display: none;
+        }
+
+        .nav-link {
+            display: block;
+            padding: 14px 18px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-decoration: none;
+            white-space: nowrap;
+            border-bottom: 2px solid transparent;
+            transition: color 0.2s, border-color 0.2s;
+        }
+
+        .nav-link:hover {
+            color: var(--text);
+        }
+
+        .nav-link.active {
+            color: var(--text);
+            border-bottom-color: var(--accent-blue);
+        }
+
+        /* Main content */
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Ground Truth Section */
+        .ground-truth {
+            padding: 60px 0 40px;
+        }
+
+        .section-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 12px;
+        }
+
+        .ground-truth .section-label {
+            color: var(--accent-orange);
+        }
+
+        .ground-truth h2 {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .ground-truth .lead {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            margin-bottom: 36px;
+            max-width: 700px;
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding-left: 32px;
+        }
+
+        .timeline::before {
+            content: "";
+            position: absolute;
+            left: 7px;
+            top: 8px;
+            bottom: 8px;
+            width: 2px;
+            background: linear-gradient(180deg, var(--accent-red), var(--accent-orange), var(--accent-yellow), var(--accent-blue));
+            border-radius: 1px;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 28px;
+        }
+
+        .timeline-item::before {
+            content: "";
+            position: absolute;
+            left: -29px;
+            top: 8px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--surface);
+            border: 2px solid var(--accent-orange);
+        }
+
+        .timeline-item.critical::before {
+            background: var(--accent-red);
+            border-color: var(--accent-red);
+            box-shadow: 0 0 12px rgba(248, 81, 73, 0.4);
+        }
+
+        .timeline-date {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--accent-orange);
+            margin-bottom: 4px;
+        }
+
+        .timeline-item.critical .timeline-date {
+            color: var(--accent-red);
+        }
+
+        .timeline-title {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .timeline-text {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.65;
+        }
+
+        .timeline-text strong {
+            color: var(--text);
+        }
+
+        /* Key detail callout */
+        .callout {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--accent-yellow);
+            border-radius: 8px;
+            padding: 20px 24px;
+            margin: 32px 0;
+            font-size: 0.92rem;
+            line-height: 1.7;
+            color: var(--text-muted);
+        }
+
+        .callout strong {
+            color: var(--accent-yellow);
+        }
+
+        .callout em {
+            color: var(--text);
+            font-style: normal;
+        }
+
+        /* Narrative Sections */
+        .narratives-header {
+            padding: 60px 0 20px;
+            text-align: center;
+            border-top: 1px solid var(--border);
+        }
+
+        .narratives-header h2 {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+
+        .narratives-header p {
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Narrative Card */
+        .narrative-section {
+            padding: 48px 0;
+            border-top: 1px solid var(--border);
+        }
+
+        .narrative-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .narrative-header {
+            padding: 28px 32px 20px;
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+        }
+
+        .narrative-number {
+            flex-shrink: 0;
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1.1rem;
+        }
+
+        .n1 .narrative-number { background: rgba(248, 81, 73, 0.15); color: var(--narrative-1); }
+        .n2 .narrative-number { background: rgba(210, 153, 34, 0.15); color: var(--narrative-2); }
+        .n3 .narrative-number { background: rgba(88, 166, 255, 0.15); color: var(--narrative-3); }
+        .n4 .narrative-number { background: rgba(63, 185, 80, 0.15); color: var(--narrative-4); }
+        .n5 .narrative-number { background: rgba(188, 140, 255, 0.15); color: var(--narrative-5); }
+
+        .narrative-header-text h3 {
+            font-size: 1.35rem;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+
+        .n1 .narrative-header-text h3 { color: var(--narrative-1); }
+        .n2 .narrative-header-text h3 { color: var(--narrative-2); }
+        .n3 .narrative-header-text h3 { color: var(--narrative-3); }
+        .n4 .narrative-header-text h3 { color: var(--narrative-4); }
+        .n5 .narrative-header-text h3 { color: var(--narrative-5); }
+
+        .core-claim {
+            font-size: 1rem;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        .narrative-body {
+            padding: 0 32px 28px;
+        }
+
+        .narrative-subsection {
+            margin-bottom: 24px;
+        }
+
+        .narrative-subsection:last-child {
+            margin-bottom: 0;
+        }
+
+        .narrative-subsection h4 {
+            font-size: 0.78rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .holders-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 0;
+        }
+
+        .holder-tag {
+            display: inline-block;
+            background: var(--surface-raised);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 4px 12px;
+            font-size: 0.78rem;
+            color: var(--text-muted);
+        }
+
+        .arguments-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .arguments-list li {
+            position: relative;
+            padding-left: 20px;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.55;
+        }
+
+        .arguments-list li::before {
+            content: "";
+            position: absolute;
+            left: 2px;
+            top: 9px;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+        }
+
+        .n1 .arguments-list li::before { background: var(--narrative-1); }
+        .n2 .arguments-list li::before { background: var(--narrative-2); }
+        .n3 .arguments-list li::before { background: var(--narrative-3); }
+        .n4 .arguments-list li::before { background: var(--narrative-4); }
+        .n5 .arguments-list li::before { background: var(--narrative-5); }
+
+        /* Critique / Obscures / The Tell boxes */
+        .critique-box {
+            background: rgba(248, 81, 73, 0.06);
+            border: 1px solid rgba(248, 81, 73, 0.2);
+            border-radius: 8px;
+            padding: 18px 22px;
+            margin-top: 4px;
+        }
+
+        .n1 .critique-box { background: rgba(248, 81, 73, 0.06); border-color: rgba(248, 81, 73, 0.2); }
+        .n2 .critique-box { background: rgba(210, 153, 34, 0.06); border-color: rgba(210, 153, 34, 0.2); }
+        .n3 .critique-box { background: rgba(88, 166, 255, 0.06); border-color: rgba(88, 166, 255, 0.2); }
+        .n4 .critique-box { background: rgba(63, 185, 80, 0.06); border-color: rgba(63, 185, 80, 0.2); }
+        .n5 .critique-box { background: rgba(188, 140, 255, 0.06); border-color: rgba(188, 140, 255, 0.2); }
+
+        .critique-box h5 {
+            font-size: 0.82rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-bottom: 10px;
+        }
+
+        .n1 .critique-box h5 { color: var(--narrative-1); }
+        .n2 .critique-box h5 { color: var(--narrative-2); }
+        .n3 .critique-box h5 { color: var(--narrative-3); }
+        .n4 .critique-box h5 { color: var(--narrative-4); }
+        .n5 .critique-box h5 { color: var(--narrative-5); }
+
+        .critique-box ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .critique-box li {
+            position: relative;
+            padding-left: 18px;
+            margin-bottom: 6px;
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            line-height: 1.55;
+        }
+
+        .critique-box li::before {
+            content: "—";
+            position: absolute;
+            left: 0;
+            color: var(--text-muted);
+        }
+
+        .critique-box p {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            line-height: 1.65;
+        }
+
+        .critique-box p strong {
+            color: var(--text);
+        }
+
+        /* The Tell box (special) */
+        .tell-box {
+            background: var(--surface-raised);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 18px 22px;
+            margin-top: 4px;
+        }
+
+        .tell-box h5 {
+            font-size: 0.82rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-bottom: 8px;
+            color: var(--accent-cyan);
+        }
+
+        .tell-box p {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            line-height: 1.65;
+        }
+
+        /* Calculus sub-sections in narrative 2 */
+        .calculus-section {
+            background: var(--surface-raised);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 18px 22px;
+            margin-bottom: 12px;
+        }
+
+        .calculus-section h5 {
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--accent-yellow);
+        }
+
+        .calculus-section p {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            line-height: 1.65;
+        }
+
+        /* Mechanism Section */
+        .mechanism-section {
+            padding: 60px 0;
+            border-top: 1px solid var(--border);
+        }
+
+        .mechanism-section h2 {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .mechanism-section .lead {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            margin-bottom: 36px;
+            max-width: 700px;
+        }
+
+        .step-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .step-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 24px 28px;
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+        }
+
+        .step-num {
+            flex-shrink: 0;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(248, 81, 73, 0.12);
+            color: var(--accent-red);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 0.9rem;
+        }
+
+        .step-content h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .step-content p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* Nuance Section */
+        .nuance-section {
+            padding: 60px 0;
+            border-top: 1px solid var(--border);
+        }
+
+        .nuance-section h2 {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .nuance-section .lead {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            margin-bottom: 36px;
+            max-width: 700px;
+        }
+
+        .nuance-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 24px 28px;
+            margin-bottom: 16px;
+        }
+
+        .nuance-card h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--accent-cyan);
+        }
+
+        .nuance-card p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.7;
+        }
+
+        /* Coordination Theory Section */
+        .coordination-section {
+            padding: 60px 0;
+            border-top: 1px solid var(--border);
+        }
+
+        .coordination-section h2 {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .coordination-section .section-label {
+            color: var(--accent-purple);
+        }
+
+        .coordination-section .lead {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            margin-bottom: 36px;
+            max-width: 700px;
+        }
+
+        .model-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 32px;
+        }
+
+        .model-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 28px;
+        }
+
+        .model-card h4 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .model-card.authoritarian h4 { color: var(--accent-red); }
+        .model-card.liberal h4 { color: var(--accent-blue); }
+
+        .model-card ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .model-card li {
+            padding-left: 18px;
+            position: relative;
+            margin-bottom: 6px;
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .model-card.authoritarian li::before {
+            content: "";
+            position: absolute;
+            left: 2px;
+            top: 8px;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--accent-red);
+        }
+
+        .model-card.liberal li::before {
+            content: "";
+            position: absolute;
+            left: 2px;
+            top: 8px;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--accent-blue);
+        }
+
+        .irony-box {
+            background: linear-gradient(135deg, rgba(188, 140, 255, 0.08), rgba(248, 81, 73, 0.08));
+            border: 1px solid rgba(188, 140, 255, 0.25);
+            border-radius: 10px;
+            padding: 24px 28px;
+        }
+
+        .irony-box h4 {
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--accent-purple);
+            margin-bottom: 10px;
+        }
+
+        .irony-box p {
+            font-size: 0.95rem;
+            color: var(--text);
+            line-height: 1.7;
+        }
+
+        /* Footer */
+        .page-footer {
+            padding: 40px 0;
+            border-top: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .page-footer p {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        /* Expand/collapse for narrative details */
+        .expandable-trigger {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            user-select: none;
+            padding: 10px 0;
+        }
+
+        .expandable-trigger .chevron {
+            transition: transform 0.25s ease;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+
+        .expandable-trigger.open .chevron {
+            transform: rotate(90deg);
+        }
+
+        .expandable-content {
+            display: none;
+        }
+
+        .expandable-content.show {
+            display: block;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero {
+                padding: 48px 20px 40px;
+            }
+
+            .narrative-header {
+                padding: 20px 20px 16px;
+            }
+
+            .narrative-body {
+                padding: 0 20px 20px;
+            }
+
+            .model-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .step-card {
+                padding: 18px 20px;
+            }
+
+            .nav-link {
+                padding: 12px 14px;
+                font-size: 0.78rem;
+            }
+        }
+
+        /* Scroll reveal animation */
+        .reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+<!-- Hero -->
+<header class="hero" id="top">
+    <h1>The Iran Conflict</h1>
+    <p class="subtitle">A Narrative Ecosystem Map</p>
+    <span class="dateline">Compiled March 2, 2026 &mdash; 72 hours into Operation Epic Fury</span>
+</header>
+
+<!-- Navigation -->
+<nav class="nav-bar">
+    <div class="nav-inner">
+        <a href="#ground-truth" class="nav-link">Ground Truth</a>
+        <a href="#narratives" class="nav-link">Narratives</a>
+        <a href="#n1" class="nav-link">Anti-Western</a>
+        <a href="#n2" class="nav-link">Multipolarity</a>
+        <a href="#n3" class="nav-link">European</a>
+        <a href="#n4" class="nav-link">Regime Change</a>
+        <a href="#n5" class="nav-link">Iranian People</a>
+        <a href="#mechanism" class="nav-link">Mechanism</a>
+        <a href="#nuance" class="nav-link">Nuance</a>
+        <a href="#coordination" class="nav-link">Coordination</a>
+    </div>
+</nav>
+
+<main>
+
+<!-- Ground Truth -->
+<section class="ground-truth container" id="ground-truth">
+    <div class="reveal">
+        <p class="section-label">Foundation</p>
+        <h2>The Ground Truth</h2>
+        <p class="lead">Before mapping narrative positions, it's worth grounding in the sequence of events &mdash; because the narrative positions only make sense against the factual backdrop.</p>
+    </div>
+
+    <div class="timeline reveal">
+        <div class="timeline-item">
+            <p class="timeline-date">Dec 2025 &ndash; Jan 2026</p>
+            <p class="timeline-title">Nationwide Protests &amp; Regime Massacre</p>
+            <p class="timeline-text">Massive protests erupted across all <strong>31 Iranian provinces</strong>, the largest since 1979. Driven by economic collapse, currency devaluation, and decades of repression. The regime responded with an <strong>unprecedented massacre</strong> &mdash; death toll estimates range from 3,117 (government) to 7,000+ confirmed (HRANA) to <strong>30,000&ndash;43,000</strong> (Iranian health ministry officials, ICHRI). The IRGC and Basij used live ammunition, mounted machine guns, and drones against civilians. Hospitals were raided; injured protesters were executed. The regime imposed the <strong>longest internet blackout on record</strong>. Foreign Shia militias were deployed to suppress Iranian citizens.</p>
+        </div>
+
+        <div class="timeline-item">
+            <p class="timeline-date">Feb 14, 2026</p>
+            <p class="timeline-title">Largest Diaspora Mobilization in Modern History</p>
+            <p class="timeline-text">Over <strong>950,000 Iranians</strong> in diaspora rallied simultaneously in Munich (250K), Toronto (350K), and Los Angeles (350K). Calls for regime change and secular democracy.</p>
+        </div>
+
+        <div class="timeline-item">
+            <p class="timeline-date">Feb 27, 2026</p>
+            <p class="timeline-title">Oman "Breakthrough" &amp; IAEA Discovery</p>
+            <p class="timeline-text">Oman's foreign minister announced Iran had reportedly agreed to halt enrichment stockpiling with full IAEA verification. However, the <strong>IAEA discovered hidden highly enriched uranium</strong> in an undamaged underground facility.</p>
+        </div>
+
+        <div class="timeline-item critical">
+            <p class="timeline-date">Feb 28, 2026</p>
+            <p class="timeline-title">Operation Epic Fury / Operation Roaring Lion</p>
+            <p class="timeline-text">The US and Israel launched coordinated strikes. <strong>Khamenei was killed.</strong> Strikes targeted nuclear facilities, ballistic missile infrastructure, military command, and leadership compounds. Iran retaliated against Israel and US bases across the Gulf, also <strong>striking civilian targets</strong> in Dubai, Bahrain, Kuwait, and Qatar.</p>
+        </div>
+    </div>
+
+    <div class="callout reveal">
+        <strong>Key Detail:</strong> As Khamenei's death was confirmed, <em>Iranians inside Iran poured into streets in celebration</em>. Security forces opened fire on celebrants. A monument to Khomeini was toppled by crowds. The diaspora held celebratory rallies worldwide, waving the pre-revolutionary Lion and Sun flag.
+    </div>
+</section>
+
+<!-- Narratives Header -->
+<section class="narratives-header container" id="narratives">
+    <div class="reveal">
+        <p class="section-label" style="color: var(--accent-blue);">Analysis</p>
+        <h2>The Five Major Narrative Positions</h2>
+        <p>Each position carries its own logic, blind spots, and relationship to the underlying facts. Expand each to explore the full landscape.</p>
+    </div>
+</section>
+
+<!-- Narrative 1 -->
+<section class="narrative-section container n1" id="n1">
+    <div class="narrative-card reveal">
+        <div class="narrative-header">
+            <div class="narrative-number">1</div>
+            <div class="narrative-header-text">
+                <h3>The Anti-Western / "Sovereignty" Narrative</h3>
+                <p class="core-claim">"The US is an imperialist aggressor violating international law and Iranian sovereignty."</p>
+            </div>
+        </div>
+        <div class="narrative-body">
+            <div class="narrative-subsection">
+                <h4>Who Holds This Position</h4>
+                <div class="holders-list">
+                    <span class="holder-tag">Russia</span>
+                    <span class="holder-tag">China</span>
+                    <span class="holder-tag">ANSWER Coalition</span>
+                    <span class="holder-tag">The People's Forum</span>
+                    <span class="holder-tag">CodePink</span>
+                    <span class="holder-tag">Black Alliance for Peace</span>
+                    <span class="holder-tag">DSA</span>
+                    <span class="holder-tag">NIAC</span>
+                    <span class="holder-tag">TRT World</span>
+                    <span class="holder-tag">Democracy Now!</span>
+                    <span class="holder-tag">Western Academic Left</span>
+                </div>
+            </div>
+
+            <div class="narrative-subsection">
+                <div class="expandable-trigger" onclick="toggleExpand(this)">
+                    <span class="chevron">&#9654;</span>
+                    <h4 style="border:none;padding:0;margin:0;">Key Arguments</h4>
+                </div>
+                <div class="expandable-content">
+                    <ul class="arguments-list">
+                        <li>The strikes are unconstitutional (no Congressional authorization)</li>
+                        <li>This is "preventive war" masquerading as defense</li>
+                        <li>The US is repeating Iraq 2003 &mdash; regime change without a plan for the day after</li>
+                        <li>"Freedom" rhetoric is weaponized to justify imperial aggression</li>
+                        <li>Air strikes cannot produce regime change; the result will be chaos</li>
+                        <li>The US is acting as Israel's enforcer, not pursuing American interests</li>
+                        <li>Negotiations were "within reach" (citing the Oman breakthrough)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="narrative-subsection">
+                <div class="critique-box">
+                    <h5>What This Narrative Obscures</h5>
+                    <ul>
+                        <li>The Iranian regime had just massacred between 7,000 and 43,000 of its own citizens</li>
+                        <li>Iranians themselves were overwhelmingly calling for regime change; many explicitly called for American military intervention</li>
+                        <li>Iranians celebrated Khamenei's death in the streets despite security forces shooting at them</li>
+                        <li>The regime used Chinese surveillance technology and foreign militias to suppress its own people</li>
+                        <li>Iran had hidden enriched uranium from the IAEA even during "breakthrough" negotiations</li>
+                        <li>The "sovereignty" being defended is the sovereignty of a theocratic regime to massacre its own population</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="narrative-subsection">
+                <div class="tell-box">
+                    <h5>The Tell</h5>
+                    <p>This narrative consistently centers the agency and interests of the Iranian <strong>state</strong> while erasing the agency of the Iranian <strong>people</strong>. It treats "Iran" as synonymous with "the Islamic Republic" rather than with the 90 million people living under it. When nearly a million diaspora Iranians rally for regime change and Iranians inside the country celebrate under gunfire, framing this as purely American imperialism requires actively ignoring Iranian voices.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Narrative 2 -->
+<section class="narrative-section container n2" id="n2">
+    <div class="narrative-card reveal">
+        <div class="narrative-header">
+            <div class="narrative-number">2</div>
+            <div class="narrative-header-text">
+                <h3>The Russia-China "Multipolarity" Narrative</h3>
+                <p class="core-claim">"The strikes represent the collapse of international law and the 'law of the jungle' replacing rules-based order."</p>
+            </div>
+        </div>
+        <div class="narrative-body">
+            <div class="narrative-subsection">
+                <h4>Who Holds This Position</h4>
+                <div class="holders-list">
+                    <span class="holder-tag">Russian Foreign Ministry</span>
+                    <span class="holder-tag">Chinese Foreign Ministry</span>
+                    <span class="holder-tag">SCO-aligned States</span>
+                    <span class="holder-tag">Global South Commentators</span>
+                </div>
+            </div>
+
+            <div class="narrative-subsection">
+                <div class="expandable-trigger" onclick="toggleExpand(this)">
+                    <span class="chevron">&#9654;</span>
+                    <h4 style="border:none;padding:0;margin:0;">Key Arguments</h4>
+                </div>
+                <div class="expandable-content">
+                    <ul class="arguments-list">
+                        <li>The assassination of a head of state violates the UN Charter</li>
+                        <li>This is "unprovoked aggression against a sovereign UN member state" (Russia)</li>
+                        <li>The international community must prevent "regression to the law of the jungle" (China)</li>
+                        <li>Western unilateralism undermines the emerging multipolar order</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="narrative-subsection">
+                <div class="critique-box">
+                    <h5>What's Actually Going On Underneath</h5>
+                    <p>Russia and China's positions are far more cynical than their rhetoric suggests.</p>
+                </div>
+            </div>
+
+            <div class="narrative-subsection">
+                <div class="calculus-section">
+                    <h5>Russia's Real Calculus</h5>
+                    <p>Iran supplies critical military drones and missiles for Russia's war in Ukraine. Iran is Moscow's last major Middle Eastern foothold after losing Syria. The INSTC trade corridor through Iran connects Russia to Indian markets. But Russia's military is overstretched in Ukraine and <strong>cannot project power</strong> to help Iran. Despite a military pact with Tehran, Russia has offered only words.</p>
+                </div>
+                <div class="calculus-section">
+                    <h5>China's Real Calculus</h5>
+                    <p>China purchased <strong>80%+</strong> of Iran's oil exports in 2025 (13.5% of China's seaborne crude imports). Beijing's BeiDou-3 navigation system has replaced GPS in Iran's military architecture. Chinese companies supply surveillance technology used to suppress protests. But as Chatham House analysts note: <em>"The weaker the Iranian regime gets&hellip; the more diplomatically, economically and technologically dependent on China it will become."</em> A weakened Iran may actually serve Chinese interests. China is likely trading its muted response for concessions on Taiwan and trade.</p>
+                </div>
+            </div>
+
+            <div class="narrative-subsection">
+                <div class="tell-box">
+                    <h5>The Structural Pattern</h5>
+                    <p>Both Russia and China use the language of sovereignty and international law <strong>instrumentally</strong>. Neither objected to Iran's massacre of its own citizens. The "multipolar order" they advocate would protect the sovereignty of authoritarian regimes to brutalize their populations without consequence. Their "anti-Western" framing serves to preserve a system where authoritarian governments remain beyond accountability.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Narrative 3 -->
+<section class="narrative-section container n3" id="n3">
+    <div class="narrative-card reveal">
+        <div class="narrative-header">
+            <div class="narrative-number">3</div>
+            <div class="narrative-header-text">
+                <h3>The Cautious Multilateral / European Position</h3>
+                <p class="core-claim">"Iran must not get nuclear weapons and must stop repressing its people, but military action carries unacceptable risks."</p>
+            </div>
+        </div>
+        <div class="narrative-body">
+            <div class="narrative-subsection">
+                <h4>Who Holds This Position</h4>
+                <div class="holders-list">
+                    <span class="holder-tag">UK</span>
+                    <span class="holder-tag">France</span>
+                    <span class="holder-tag">Germany (E3)</span>
+                    <span class="holder-tag">EU</span>
+                    <span class="holder-tag">Chatham House</span>
+                    <span class="holder-tag">ECFR</span>
+                    <span class="holder-tag">Some Gulf Arab States</span>
+                </div>
+            </div>
+
+            <div class="narrative-subsection">
+                <div class="expandable-trigger" onclick="toggleExpand(this)">
+                    <span class="chevron">&#9654;</span>
+                    <h4 style="border:none;padding:0;margin:0;">Key Arguments</h4>
+                </div>
+                <div class="expandable-content">
+                    <ul class="arguments-list">
+                        <li>Iran should end its nuclear and missile programs, cease repression, and stop supporting armed groups</li>
+                        <li>But the strikes may be "an illegal war of choice" (ECFR)</li>
+                        <li>The pathway to a stable Iran just got narrower</li>
+                        <li>Air strikes alone cannot achieve regime change</li>
+                        <li>Past interventions (Iraq, Libya) produced worse outcomes</li>
+                        <li>Arab Gulf states fear "an expansionist and aggressive Israel" and "the chaos of a potentially collapsed Iranian state" equally</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="narrative-subsection">
+                <div class="critique-box">
+                    <h5>What's Interesting Here</h5>
+                    <p>This position attempts to hold two truths simultaneously: the Iranian regime is terrible <strong>AND</strong> military action is dangerous. The E3 condemned Iran's retaliatory strikes while declining to explicitly endorse the US-Israel operation. The UK deployed RAF Typhoons defensively while avoiding participation in offensive strikes.</p>
+                    <br>
+                    <p>The European position reveals a genuine dilemma: decades of sanctions, diplomacy, and international law <strong>did fail</strong> to stop Iran's nuclear program or its repression. As German Chancellor Merz acknowledged, reliance on these tools was <em>"clearly ineffective."</em> But the alternative being pursued &mdash; military decapitation &mdash; carries its own catastrophic risks.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Narrative 4 -->
+<section class="narrative-section container n4" id="n4">
+    <div class="narrative-card reveal">
+        <div class="narrative-header">
+            <div class="narrative-number">4</div>
+            <div class="narrative-header-text">
+                <h3>The Regime Change Realist Position</h3>
+                <p class="core-claim">"The Islamic Republic poses an existential threat that diplomacy cannot resolve; military action is the least bad option."</p>
+            </div>
+        </div>
+        <div class="narrative-body">
+            <div class="narrative-subsection">
+                <h4>Who Holds This Position</h4>
+                <div class="holders-list">
+                    <span class="holder-tag">Trump Administration</span>
+                    <span class="holder-tag">Netanyahu Government</span>
+                    <span class="holder-tag">Hawkish US FP Establishment</span>
+                    <span class="holder-tag">Atlantic Council (some)</span>
+                    <span class="holder-tag">Washington Institute</span>
+                    <span class="holder-tag">Iranian Diaspora Orgs</span>
+                    <span class="holder-tag">Reza Pahlavi</span>
+                </div>
+            </div>
+
+            <div class="narrative-subsection">
+                <div class="expandable-trigger" onclick="toggleExpand(this)">
+                    <span class="chevron">&#9654;</span>
+                    <h4 style="border:none;padding:0;margin:0;">Key Arguments</h4>
+                </div>
+                <div class="expandable-content">
+                    <ul class="arguments-list">
+                        <li>45 years of diplomacy produced zero lasting constraints on Iran's nuclear ambitions</li>
+                        <li>Iran was enriching uranium to near-weapons grade despite all agreements</li>
+                        <li>The regime massacred tens of thousands of its own citizens &mdash; this is not a negotiating partner</li>
+                        <li>Iran's proxy network destabilized the entire region</li>
+                        <li>The Iranian <em>people</em> want regime change &mdash; nearly a million rallied for it</li>
+                        <li>Strikes targeted military and leadership infrastructure, not the Iranian people</li>
+                        <li>Iran's economy has no leg to stand on; the regime is at its weakest point in decades</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="narrative-subsection">
+                <div class="critique-box">
+                    <h5>Legitimate Critiques of This Position</h5>
+                    <ul>
+                        <li>No clear plan for "the day after"</li>
+                        <li>Air strikes historically do not produce regime change on their own</li>
+                        <li>The IRGC as an institution runs deeper than any individual leader</li>
+                        <li>Possible outcomes include further military rule, fragmentation, civil conflict, or a Venezuela-style reshuffle</li>
+                        <li>Regional escalation is already occurring (strikes on Gulf states, renewed Lebanon conflict)</li>
+                        <li>Congress was not consulted (constitutional concerns)</li>
+                        <li>The operation undermined a diplomatic "breakthrough" that was reportedly hours away</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Narrative 5 -->
+<section class="narrative-section container n5" id="n5">
+    <div class="narrative-card reveal">
+        <div class="narrative-header">
+            <div class="narrative-number">5</div>
+            <div class="narrative-header-text">
+                <h3>The Iranian People's Position</h3>
+                <p class="core-claim">"This regime does not represent us. We want freedom, secular democracy, and reintegration with the world."</p>
+            </div>
+        </div>
+        <div class="narrative-body">
+            <div class="narrative-subsection">
+                <h4>Who Holds This Position</h4>
+                <div class="holders-list">
+                    <span class="holder-tag">Iranian Protesters</span>
+                    <span class="holder-tag">Iranian Diaspora</span>
+                    <span class="holder-tag">Student Movements</span>
+                    <span class="holder-tag">Reza Pahlavi</span>
+                    <span class="holder-tag">Secular Democratic Activists</span>
+                </div>
+            </div>
+
+            <div class="narrative-subsection">
+                <div class="expandable-trigger" onclick="toggleExpand(this)">
+                    <span class="chevron">&#9654;</span>
+                    <h4 style="border:none;padding:0;margin:0;">Key Evidence</h4>
+                </div>
+                <div class="expandable-content">
+                    <ul class="arguments-list">
+                        <li>Protests across all 31 provinces, the largest since 1979</li>
+                        <li>Protesters chanting "Death to Khamenei" and "Death to the Velayat" (theocratic guardianship)</li>
+                        <li>Spontaneous celebrations of Khamenei's death despite security forces shooting at celebrants</li>
+                        <li>Toppling of Khomeini monument in southern Iran</li>
+                        <li>Nearly 1 million diaspora Iranians rallying for regime change in coordinated global protests</li>
+                        <li>Iranians inside Iran explicitly pleading with Trump not to negotiate with the regime</li>
+                        <li>Widespread use of the pre-revolutionary Lion and Sun flag as a symbol of secular national identity</li>
+                        <li>416 Iranian social and political activists calling for a "National Iranians Rescue Front"</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="narrative-subsection">
+                <div class="critique-box">
+                    <h5>Why This Position Gets Erased</h5>
+                    <p>The internet blackout imposed by the regime is specifically designed to prevent Iranian voices from reaching the outside world. Chinese surveillance technology helps the regime monitor and suppress dissent. The narrative infrastructure of the "anti-Western" position systematically replaces Iranian agency with Western agency &mdash; making it a story about what America does rather than what Iranians want. This is arguably the <strong>deepest form of erasure</strong>: treating 90 million people as objects of geopolitics rather than subjects of their own liberation.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Mechanism Section -->
+<section class="mechanism-section container" id="mechanism">
+    <div class="reveal">
+        <p class="section-label" style="color: var(--accent-red);">Pattern Recognition</p>
+        <h2>The Narrative Mechanism</h2>
+        <p class="lead">A consistent pattern where the anti-Western narrative coalition functions to protect authoritarian regimes from accountability by reframing every challenge as "Western imperialism."</p>
+    </div>
+
+    <div class="step-cards">
+        <div class="step-card reveal">
+            <div class="step-num">1</div>
+            <div class="step-content">
+                <h4>Sovereignty Shield</h4>
+                <p>Frame any intervention as a violation of sovereignty, regardless of what the sovereign state is doing to its own people. This treats the state as sacred and the people within it as invisible.</p>
+            </div>
+        </div>
+
+        <div class="step-card reveal">
+            <div class="step-num">2</div>
+            <div class="step-content">
+                <h4>Whataboutism</h4>
+                <p>Point to US hypocrisy, past failures (Iraq, Libya), and moral imperfections to delegitimize any action. This is structurally unfalsifiable &mdash; because the US <em>is</em> imperfect, there will always be material to work with.</p>
+            </div>
+        </div>
+
+        <div class="step-card reveal">
+            <div class="step-num">3</div>
+            <div class="step-content">
+                <h4>Agency Erasure</h4>
+                <p>Remove the agency of the people living under authoritarianism. When Iranians celebrate Khamenei's death in the streets, characterize it as "US-manufactured regime change." When a million diaspora Iranians rally for freedom, characterize them as tools of imperialism.</p>
+            </div>
+        </div>
+
+        <div class="step-card reveal">
+            <div class="step-num">4</div>
+            <div class="step-content">
+                <h4>Procedural Obstruction</h4>
+                <p>Demand adherence to international legal processes that are structurally designed to be vetoed by Russia and China, ensuring no legitimate path to accountability ever opens.</p>
+            </div>
+        </div>
+
+        <div class="step-card reveal">
+            <div class="step-num">5</div>
+            <div class="step-content">
+                <h4>False Equivalence</h4>
+                <p>Position the conflict as "both sides" when the asymmetry is stark &mdash; one side is a theocratic regime that massacred tens of thousands of peaceful protesters; the other, whatever its flaws, is a system that allows protest, dissent, and democratic accountability.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Nuance Section -->
+<section class="nuance-section container" id="nuance">
+    <div class="reveal">
+        <p class="section-label" style="color: var(--accent-cyan);">Intellectual Honesty</p>
+        <h2>Where Nuance Is Required</h2>
+        <p class="lead">The anti-Western narrative protects the regime. But intellectual honesty also requires acknowledging the genuine tensions.</p>
+    </div>
+
+    <div class="nuance-card reveal">
+        <h4>The US Is Not Morally Pristine</h4>
+        <p>The strikes were launched without Congressional authorization. There was no clear post-regime plan. The Minab school airstrike killed 148 children according to Iranian state media. The operation may produce fragmentation rather than democracy. The "help is on the way" rhetoric to Iranian protesters may prove hollow if the regime survives or is replaced by something worse. Previous US interventions in the Middle East have left catastrophic wreckage.</p>
+    </div>
+
+    <div class="nuance-card reveal">
+        <h4>The Governance Comparison Is Real but Incomplete</h4>
+        <p>The US system is demonstrably more free &mdash; it allows protest, press freedom, democratic transitions of power, religious pluralism, and individual rights that the Islamic Republic systematically denies. But "more free" is not the same as "qualified to forcibly restructure another country's government." The question isn't whether American governance is better than Iranian theocracy (it clearly is by most measures of human freedom) but whether military force can export those values &mdash; and the historical record is sobering.</p>
+    </div>
+
+    <div class="nuance-card reveal">
+        <h4>The Iranian People's Agency Is the Strongest Moral Argument</h4>
+        <p>And the one most consistently erased by both the anti-Western narrative and the "cautious multilateral" position. When the people of a country are massacred for demanding freedom, and they celebrate the death of their oppressor under gunfire, their voice should carry more weight than any think tank analysis or UN Security Council debate. The challenge is that military intervention, even when welcomed by the population, often produces outcomes those populations did not choose.</p>
+    </div>
+</section>
+
+<!-- Coordination Theory -->
+<section class="coordination-section container" id="coordination">
+    <div class="reveal">
+        <p class="section-label">Coordination Theory Frame</p>
+        <h2>Two Coordination Models in Collision</h2>
+        <p class="lead">Through a Voluntary Polity Stack lens, what's playing out is a fundamental collision between two coordination models.</p>
+    </div>
+
+    <div class="model-grid reveal">
+        <div class="model-card authoritarian">
+            <h4>Authoritarian Coordination</h4>
+            <ul>
+                <li>Top-down control</li>
+                <li>Information suppression</li>
+                <li>Coercive enforcement</li>
+                <li>Sovereignty as shield against accountability</li>
+                <li>Populations treated as resources of the state</li>
+            </ul>
+        </div>
+        <div class="model-card liberal">
+            <h4>Liberal Coordination</h4>
+            <ul>
+                <li>Bottom-up legitimacy</li>
+                <li>Information openness (in principle)</li>
+                <li>Governance through consent</li>
+                <li>Individual rights as constraints on state power</li>
+                <li>Internal mechanisms for self-correction</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="irony-box reveal">
+        <h4>The Deepest Irony</h4>
+        <p>The anti-Western narrative coalition functions as an epistemic coordination mechanism that protects the authoritarian model from challenge. It's not just political rhetoric &mdash; it's an information infrastructure that systematically degrades the ability of populations to coordinate against their oppressors by reframing liberation as imperialism.</p>
+        <br>
+        <p>The "anti-imperialist" narrative is itself a form of <strong>epistemic imperialism</strong> &mdash; it imposes a framework on Iranian people that erases their own stated desires and replaces their agency with a story about Western power.</p>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="page-footer container">
+    <p>This is a living document. The situation is evolving hour by hour. The positions mapped here reflect the landscape as of March 2, 2026.</p>
+</footer>
+
+</main>
+
+<script>
+    // Expand/collapse functionality
+    function toggleExpand(trigger) {
+        const content = trigger.nextElementSibling;
+        trigger.classList.toggle('open');
+        content.classList.toggle('show');
+    }
+
+    // Scroll reveal
+    function revealOnScroll() {
+        const elements = document.querySelectorAll('.reveal');
+        const windowHeight = window.innerHeight;
+
+        elements.forEach(el => {
+            const elementTop = el.getBoundingClientRect().top;
+            if (elementTop < windowHeight - 60) {
+                el.classList.add('visible');
+            }
+        });
+    }
+
+    // Active nav link tracking
+    function updateActiveNav() {
+        const sections = document.querySelectorAll('section[id], .ground-truth[id]');
+        const navLinks = document.querySelectorAll('.nav-link');
+        let currentId = '';
+
+        sections.forEach(section => {
+            const rect = section.getBoundingClientRect();
+            if (rect.top <= 120) {
+                currentId = section.id;
+            }
+        });
+
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === '#' + currentId) {
+                link.classList.add('active');
+            }
+        });
+    }
+
+    // Smooth scroll for nav links
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                const offset = 70;
+                const top = target.getBoundingClientRect().top + window.pageYOffset - offset;
+                window.scrollTo({ top: top, behavior: 'smooth' });
+            }
+        });
+    });
+
+    window.addEventListener('scroll', () => {
+        revealOnScroll();
+        updateActiveNav();
+    });
+
+    // Initial reveal for elements already in view
+    revealOnScroll();
+</script>
+
+</body>
+</html>
